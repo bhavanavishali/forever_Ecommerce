@@ -161,20 +161,12 @@ AUTH_USER_MODEL = 'api.CustomUser'
 
 
 CORS_ALLOWED_ORIGINS =  [
- "http://localhost:5173",
-
-    "https://cricb.shop",
-    "https://www.cricb.shop",
-
-    "https://forever-ecommerce-eosin.vercel.app",
+ 
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-
     "https://cricb.shop",
     "https://www.cricb.shop",
-
     "https://forever-ecommerce-eosin.vercel.app",
 ]
 

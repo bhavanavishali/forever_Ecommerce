@@ -170,12 +170,7 @@ CORS_ALLOWED_ORIGINS =  [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-
-    "https://cricb.shop",
-    "https://www.cricb.shop",
-
-    "https://forever-ecommerce-eosin.vercel.app",
+    
 ]
 
 
