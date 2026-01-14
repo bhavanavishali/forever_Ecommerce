@@ -644,61 +644,6 @@ def generate_otp():
 
 
 
-# def send_otp_email(email, otp):
-#     """
-#     Send OTP via email. If email configuration is not set up,
-#     logs the OTP to console for development purposes.
-#     """
-#     from decouple import UndefinedValueError
-    
-#     try:
-#         # Try to get email configuration
-#         from_email = config('EMAIL_HOST_USER')
-#         email_host = config('EMAIL_HOST')
-#         email_port = config('EMAIL_PORT', cast=int)
-#         email_user = config('EMAIL_HOST_USER')
-#         email_password = config('EMAIL_HOST_PASSWORD')
-#         email_use_tls = config('EMAIL_USE_TLS', cast=bool)
-        
-#         # If we got here, email config exists - send email
-#     subject = 'Your OTP Code'
-#     message = f'Your OTP is {otp}'
-#     recipient_list = [email]
-
-#     # Create EmailBackend with SSL context
-#     connection = EmailBackend(
-#             host=email_host,
-#             port=email_port,
-#             username=email_user,
-#             password=email_password,
-#             use_tls=email_use_tls,
-#     )
-
-#     try:
-#         send_mail(
-#             subject,
-#             message,
-#             from_email,
-#             recipient_list,
-#             fail_silently=False,
-#             connection=connection
-#         )
-#         logging.info(f'OTP successfully sent to {email}')
-#     except Exception as e:
-#             logging.error(f'Error sending OTP email: {e}')
-#             # Fall through to console logging as backup
-#             print(f'\n{"="*60}')
-#             print(f'OTP for {email}: {otp}')
-#             print(f'{"="*60}\n')
-#             logging.info(f'OTP logged to console for {email}: {otp}')
-            
-#     except UndefinedValueError:
-#         # Email configuration not set up - log to console for development
-#         print(f'\n{"="*60}')
-#         print(f'📧 EMAIL CONFIGURATION NOT SET UP')
-#         print(f'OTP for {email}: {otp}')
-#         print(f'{"="*60}\n')
-#         logging.warning(f'Email configuration not found. OTP logged to console for {email}: {otp}')
 def send_otp_email(email, otp):
     """
     Send OTP via email. If email configuration is not set up,
@@ -716,30 +661,30 @@ def send_otp_email(email, otp):
         email_use_tls = config('EMAIL_USE_TLS', cast=bool)
         
         # If we got here, email config exists - send email
-        subject = 'Your OTP Code'
-        message = f'Your OTP is {otp}'
-        recipient_list = [email]
+    subject = 'Your OTP Code'
+    message = f'Your OTP is {otp}'
+    recipient_list = [email]
 
-        # Create EmailBackend with SSL context
-        connection = EmailBackend(
+    # Create EmailBackend with SSL context
+    connection = EmailBackend(
             host=email_host,
             port=email_port,
             username=email_user,
             password=email_password,
             use_tls=email_use_tls,
-        )
+    )
 
-        try:
-            send_mail(
-                subject,
-                message,
-                from_email,
-                recipient_list,
-                fail_silently=False,
-                connection=connection
-            )
-            logging.info(f'OTP successfully sent to {email}')
-        except Exception as e:
+    try:
+        send_mail(
+            subject,
+            message,
+            from_email,
+            recipient_list,
+            fail_silently=False,
+            connection=connection
+        )
+        logging.info(f'OTP successfully sent to {email}')
+    except Exception as e:
             logging.error(f'Error sending OTP email: {e}')
             # Fall through to console logging as backup
             print(f'\n{"="*60}')
@@ -754,6 +699,7 @@ def send_otp_email(email, otp):
         print(f'OTP for {email}: {otp}')
         print(f'{"="*60}\n')
         logging.warning(f'Email configuration not found. OTP logged to console for {email}: {otp}')
+
 
 
 @api_view(["POST"])
@@ -1949,26 +1895,29 @@ def create_order(request):
             return Response({'error': 'Invalid amount format'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Initialize Razorpay client
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        currency = 'INR'
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+   
+    currency = 'INR'
         
         # Create Razorpay order (amount in paise)
-        payment = client.order.create({
+    payment = client.order.create({
             'amount': int(amount_float * 100),  # Convert to paise
-            'currency': currency,
-            'payment_capture': 1
-        })
+        'currency': currency,
+        'payment_capture': 1
+    })
 
-        return Response({
-            'order_id': payment['id'],
+    return Response({
+        'order_id': payment['id'],
             'razorpay_key': settings.RAZORPAY_KEY_ID,  # Use key from settings, not hardcoded
-            'amount': payment['amount']
-        })
+        'amount': payment['amount']
+    })
     except razorpay.errors.BadRequestError as e:
         return Response({'error': f'Razorpay error: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         logging.error(f'Error creating Razorpay order: {str(e)}')
         return Response({'error': f'Failed to create payment order: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 # api for verify payment using razor pay

@@ -1926,49 +1926,7 @@ def update_order_status(request, id):
 
 # api for create order using razor pay
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_order(request):
-    try:
-        # Validate Razorpay credentials
-        if not settings.RAZORPAY_KEY_ID or not settings.RAZORPAY_KEY_SECRET:
-            return Response({'error': 'Razorpay credentials not configured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        # Get amount from request
-        amount = request.data.get('totalAmount') or request.data.get('amount')  # Support both field names
-        
-        # Validate amount
-        if not amount:
-            return Response({'error': 'Amount is required'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        try:
-            amount_float = float(amount)
-            if amount_float <= 0:
-                return Response({'error': 'Amount must be greater than 0'}, status=status.HTTP_400_BAD_REQUEST)
-        except (ValueError, TypeError):
-            return Response({'error': 'Invalid amount format'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Initialize Razorpay client
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        currency = 'INR'
-        
-        # Create Razorpay order (amount in paise)
-        payment = client.order.create({
-            'amount': int(amount_float * 100),  # Convert to paise
-            'currency': currency,
-            'payment_capture': 1
-        })
 
-        return Response({
-            'order_id': payment['id'],
-            'razorpay_key': settings.RAZORPAY_KEY_ID,  # Use key from settings, not hardcoded
-            'amount': payment['amount']
-        })
-    except razorpay.errors.BadRequestError as e:
-        return Response({'error': f'Razorpay error: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        logging.error(f'Error creating Razorpay order: {str(e)}')
-        return Response({'error': f'Failed to create payment order: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # api for verify payment using razor pay

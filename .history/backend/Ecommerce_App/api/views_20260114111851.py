@@ -1949,26 +1949,29 @@ def create_order(request):
             return Response({'error': 'Invalid amount format'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Initialize Razorpay client
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        currency = 'INR'
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+   
+    currency = 'INR'
         
         # Create Razorpay order (amount in paise)
-        payment = client.order.create({
+    payment = client.order.create({
             'amount': int(amount_float * 100),  # Convert to paise
-            'currency': currency,
-            'payment_capture': 1
-        })
+        'currency': currency,
+        'payment_capture': 1
+    })
 
-        return Response({
-            'order_id': payment['id'],
+    return Response({
+        'order_id': payment['id'],
             'razorpay_key': settings.RAZORPAY_KEY_ID,  # Use key from settings, not hardcoded
-            'amount': payment['amount']
-        })
+        'amount': payment['amount']
+    })
     except razorpay.errors.BadRequestError as e:
         return Response({'error': f'Razorpay error: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         logging.error(f'Error creating Razorpay order: {str(e)}')
         return Response({'error': f'Failed to create payment order: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 # api for verify payment using razor pay
