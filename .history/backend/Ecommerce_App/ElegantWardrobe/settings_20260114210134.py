@@ -39,12 +39,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = [  "api.cricb.shop",
-    "cricb.shop",
-    "www.cricb.shop",
-    "13.233.255.86",
-    "localhost",
-    "127.0.0.1",]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -160,17 +155,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'api.CustomUser'
 
 
-CORS_ALLOWED_ORIGINS =  [
-    "https://cricb.shop",
-    "https://www.cricb.shop",
-    "https://forever-ecommerce-eosin.vercel.app",
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://sabarinathem.xyz",
+    "https://www.sabarinathem.xyz",
+    "https://forever.sabarinathem.xyz",
+    "https://www.forever.sabarinathem.xyz",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://cricb.shop",
-    "https://www.cricb.shop",
-    "https://forever-ecommerce-eosin.vercel.app",
+    "http://localhost:5173",
+    "https://sabarinathem.xyz",
+    "https://www.sabarinathem.xyz",
+    "https://forever.sabarinathem.xyz",
+    "https://www.forever.sabarinathem.xyz",
 ]
 
 

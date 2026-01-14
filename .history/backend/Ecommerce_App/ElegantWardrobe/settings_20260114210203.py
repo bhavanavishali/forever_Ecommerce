@@ -159,8 +159,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'api.CustomUser'
 
-
-CORS_ALLOWED_ORIGINS =  [
+ [
     "https://cricb.shop",
     "https://www.cricb.shop",
     "https://forever-ecommerce-eosin.vercel.app",
@@ -168,9 +167,11 @@ CORS_ALLOWED_ORIGINS =  [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://cricb.shop",
-    "https://www.cricb.shop",
-    "https://forever-ecommerce-eosin.vercel.app",
+    "http://localhost:5173",
+    "https://sabarinathem.xyz",
+    "https://www.sabarinathem.xyz",
+    "https://forever.sabarinathem.xyz",
+    "https://www.forever.sabarinathem.xyz",
 ]
 
 
